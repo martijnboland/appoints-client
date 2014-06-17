@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html ng-app="appointsClient">
+<html ng-app="appoints" ng-controller="AppCtrl">
   <head>
-    <meta charset="utf-8"/>
-    <title>appointsClient</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title ng-bind-template="{{pageTitle}} | Appoints"></title>
     <!-- inject:vendor:css -->
     <!-- endinject -->
     <!-- inject:css -->
@@ -10,10 +14,7 @@
     <!-- endinject -->
   </head>
   <body>
-    <hgroup>
-      <h1>appointsClient</h1>
-      <h2>Your new AngularJS app is now ready...</h2>
-    </hgroup>
+
     <ng-view></ng-view>
     <!-- inject:vendor:js -->
     <script src="/jquery/dist/jquery.js"></script>
@@ -22,6 +23,8 @@
     <script src="/bootstrap/dist/js/bootstrap.js"></script>
     <!-- endinject -->
     <!-- inject:js -->
+    <script src="/appoints-client-templates.js"></script>
+    <script src="/home/home.js"></script>
     <script src="/app.js"></script>
     <!-- endinject -->
   </body>
