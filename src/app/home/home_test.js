@@ -1,4 +1,5 @@
-/* global describe, it, beforeEach, module, inject, expect*/
+/*jshint expr: true*/
+/*global describe, it, beforeEach, module, inject, expect*/
 describe('Home', function () {
 
   beforeEach(module('appoints.home'));
