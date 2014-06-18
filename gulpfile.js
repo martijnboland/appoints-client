@@ -94,7 +94,7 @@ gulp.task('vendors', function () {
  * Index
  */
 gulp.task('index', index);
-gulp.task('build-all', ['styles', 'templates'], index);
+gulp.task('build-all', ['config', 'styles', 'templates'], index);
 
 function index () {
   var opt = {read: false};
@@ -113,6 +113,16 @@ function index () {
 gulp.task('assets', function () {
   return gulp.src('./src/app/assets/**')
     .pipe(gulp.dest('./dist/assets'));
+});
+
+/**
+ * Config
+ */
+gulp.task('config', function () {
+  gulp.src('config.json')
+    .pipe(g.ngConstant())
+    // Writes config.js to dist/ folder
+    .pipe(gulp.dest('./src/app/'));
 });
 
 /**

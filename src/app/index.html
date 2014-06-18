@@ -14,8 +14,26 @@
     <!-- endinject -->
   </head>
   <body>
-
-    <ng-view></ng-view>
+    <header class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="/" class="navbar-brand">Appoints</a>
+        </div>
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav navbar-right">
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="container">
+      <ng-view></ng-view>
+    </div>
     <!-- inject:vendor:js -->
     <script src="/jquery/dist/jquery.js"></script>
     <script src="/angular/angular.js"></script>
@@ -24,6 +42,7 @@
     <!-- endinject -->
     <!-- inject:js -->
     <script src="/appoints-client-templates.js"></script>
+    <script src="/config.js"></script>
     <script src="/home/home.js"></script>
     <script src="/app.js"></script>
     <!-- endinject -->

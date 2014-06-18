@@ -1,4 +1,5 @@
 angular.module('appoints.home', [
+  'appoints.config',
   'ngRoute'
 ])
 
@@ -11,6 +12,6 @@ angular.module('appoints.home', [
     });
 })
 
-.controller('HomeCtrl', function HomeController($scope) {
-  $scope.test = '';
+.controller('HomeCtrl', function HomeController($scope, version) {
+  $scope.version = version;
 });
