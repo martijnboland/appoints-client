@@ -1,7 +1,7 @@
 angular.module("appoints.config", [])
 
-.constant("version", "0.2.0")
+.constant("appointsVersion", "0.1.0")
 
-.constant("default-api-endpoint", "http://localhost:3000")
+.constant("appointsDefaultApiEndpoint", "http://localhost:3000")
 
 ;
