@@ -130,8 +130,8 @@ gulp.task('config', function () {
  */
 gulp.task('dist', ['vendors', 'assets', 'styles-dist', 'scripts-dist'], function () {
   return gulp.src('./src/app/index.html')
-    .pipe(g.inject(gulp.src('./dist/vendors.min.{js,css}'), {ignorePath: 'dist', starttag: '<!-- inject:vendor:{{ext}} -->'}))
-    .pipe(g.inject(gulp.src('./dist/' + bower.name + '.min.{js,css}'), {ignorePath: 'dist'}))
+    .pipe(g.inject(gulp.src('./dist/vendors.min.{js,css}'), {addRootSlash: false, ignorePath: 'dist', starttag: '<!-- inject:vendor:{{ext}} -->'}))
+    .pipe(g.inject(gulp.src('./dist/' + bower.name + '.min.{js,css}'), {addRootSlash: false, ignorePath: 'dist'}))
     .pipe(g.htmlmin(htmlminOpts))
     .pipe(gulp.dest('./dist/'));
 });
@@ -253,7 +253,7 @@ function buildTemplates () {
   return lazypipe()
     .pipe(g.ngHtml2js, {
       moduleName: bower.name + '-templates',
-      prefix: '/' + bower.name + '/',
+      //prefix: '/' + bower.name + '/',
       stripPrefix: '/src/app'
     })
     .pipe(g.concat, bower.name + '-templates.js')

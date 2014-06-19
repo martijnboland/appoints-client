@@ -23,10 +23,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="/" class="navbar-brand">Appoints</a>
+          <a href="#/" class="navbar-brand">Appoints</a>
         </div>
         <nav class="collapse navbar-collapse" role="navigation">
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-right" ng-show="!user.isAuthenticated">
+            <li ng-class="{ active: routeIs('/login') }">
+              <a href="#/login">Login</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" ng-show="user.isAuthenticated">
+            <li>{{user.name}}</li>
+            <li>
+              <a href="#" ng-click='logout()' translate>navbar.logout</a>
+            </li>
           </ul>
         </nav>
       </div>
@@ -42,7 +51,10 @@
     <!-- endinject -->
     <!-- inject:js -->
     <script src="/appoints-client-templates.js"></script>
+    <script src="/auth/usersession.js"></script>
     <script src="/config.js"></script>
+    <script src="/shared/flash.js"></script>
+    <script src="/auth/login.js"></script>
     <script src="/home/home.js"></script>
     <script src="/app.js"></script>
     <!-- endinject -->
