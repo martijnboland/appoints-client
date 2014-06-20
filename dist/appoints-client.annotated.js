@@ -7,7 +7,7 @@
   module.run([
     '$templateCache',
     function ($templateCache) {
-      $templateCache.put('auth/login.html', '<h2>Login</h2><p>Appoints doesn\'t store user credentials such as usernames and passwords. It\'s required to use one of the providers below.</p><p><a href="" ng-click="loginFacebook()">Login with Facebook</a><br><a href="" ng-click="loginGoogle()">Login with Google</a></p>');
+      $templateCache.put('home/home.html', '<h2>Appointment scheduler app version {{version}}</h2>');
     }
   ]);
 }());
@@ -20,57 +20,10 @@
   module.run([
     '$templateCache',
     function ($templateCache) {
-      $templateCache.put('home/home.html', '<h2>Appointment scheduler app version {{version}}</h2>');
+      $templateCache.put('auth/login.html', '<h2>Login</h2><p>Appoints doesn\'t store user credentials such as usernames and passwords. It\'s required to use one of the providers below.</p><p><a href="" ng-click="loginFacebook()">Login with Facebook</a><br><a href="" ng-click="loginGoogle()">Login with Google</a></p>');
     }
   ]);
 }());
-angular.module('appoints.usersession', []).factory('usersession', [
-  '$rootScope',
-  '$http',
-  '$window',
-  'config',
-  'flash',
-  function ($rootScope, $http, $window, config, flash) {
-    var defaultSession = {
-        userId: '',
-        displayName: '',
-        isAuthenticated: false,
-        roles: []
-      };
-    function Session() {
-      // always start with a default instance.
-      return angular.copy(defaultSession, this);
-    }
-    var currentSession = new Session();
-    function current() {
-      return currentSession;
-    }
-    function login(token) {
-      // Authenticate the user from the given authorization token
-      $window.localStorage.setItem('access_token', token);
-      return $http({
-        method: 'GET',
-        url: config.defaultApiEndpoint + '/me'
-      }).then(function (userData) {
-        currentSession.isAuthenticated = true;
-        currentSession.userId = userData.userId;
-        currentSession.displayName = userData.displayName;
-        currentSession.roles = userData.roles;
-      }, function (err) {
-        flash.add(err.message, 'error');
-      });
-    }
-    function logout() {
-      $window.localStorage.removeItem('access_token');
-      currentSession = new Session();
-    }
-    return {
-      current: current,
-      login: login,
-      logout: logout
-    };
-  }
-]);
 angular.module('appoints.config', []).constant('config', {
   'version': '0.1.0',
   'defaultApiEndpoint': 'http://localhost:3000'
@@ -109,44 +62,56 @@ angular.module('appoints.flash', []).factory('flash', [
     };
   }
 ]);
-angular.module('appoints.login', [
-  'appoints.config',
-  'appoints.usersession',
-  'ngRoute'
-]).config([
-  '$routeProvider',
-  function config($routeProvider) {
-    $routeProvider.when('/login', {
-      templateUrl: 'auth/login.html',
-      controller: 'LoginCtrl',
-      title: 'Login'
-    });
-  }
-]).controller('LoginCtrl', [
-  '$scope',
+angular.module('appoints.usersession', [
+  'appoints.flash',
+  'appoints.config'
+]).factory('usersession', [
+  '$rootScope',
+  '$http',
   '$window',
   'config',
-  'usersession',
-  function LoginController($scope, $window, config, usersession) {
-    var popup;
-    $scope.loginFacebook = function () {
-      return authWindow(config.defaultApiEndpoint + '/auth/facebook');
-    };
-    $scope.loginGoogle = function () {
-      return authWindow(config.defaultApiEndpoint + '/auth/google');
-    };
-    function authWindow(authUrl) {
-      popup = $window.open(authUrl, 'authenticate', 'width=600,height=450');
-      return false;
+  'flash',
+  function ($rootScope, $http, $window, config, flash) {
+    var defaultSession = {
+        userId: '',
+        displayName: '',
+        isAuthenticated: false,
+        roles: []
+      };
+    function Session() {
+      // always start with a default instance.
+      return angular.copy(defaultSession, this);
     }
-    $window.addEventListener('message', function (event) {
-      if (event.origin !== config.defaultApiEndpoint) {
-        return;
-      }
-      usersession.login(event.data).then(function () {
-        popup.close();
+    var currentSession = new Session();
+    function current() {
+      return currentSession;
+    }
+    function login(token) {
+      // Authenticate the user from the given authorization token
+      $window.localStorage.setItem('access_token', token);
+      return $http({
+        method: 'GET',
+        url: config.defaultApiEndpoint + '/me'
+      }).then(function (res) {
+        currentSession.isAuthenticated = true;
+        currentSession.userId = res.data.userId;
+        currentSession.displayName = res.data.displayName;
+        currentSession.roles = res.data.roles;
+        $rootScope.$broadcast('event:loggedin', currentSession);
+      }, function (err) {
+        flash.add(err.message, 'error');
       });
-    }, false);
+    }
+    function logout() {
+      $window.localStorage.removeItem('access_token');
+      currentSession = new Session();
+      $rootScope.$broadcast('event:loggedout', currentSession);
+    }
+    return {
+      current: current,
+      login: login,
+      logout: logout
+    };
   }
 ]);
 angular.module('appoints.home', [
@@ -168,10 +133,102 @@ angular.module('appoints.home', [
     $scope.version = config.version;
   }
 ]);
+angular.module('appoints.authinterceptor', ['appoints.usersession']).factory('authInterceptor', [
+  '$rootScope',
+  '$q',
+  '$window',
+  '$location',
+  '$log',
+  '$injector',
+  function ($rootScope, $q, $window, $location, $log, $injector) {
+    return {
+      request: function (config) {
+        config.headers = config.headers || {};
+        if ($window.localStorage.getItem('access_token')) {
+          config.headers.Authorization = 'Bearer ' + $window.localStorage.getItem('access_token');
+        }
+        return config;
+      },
+      response: function (response) {
+        if (response.status === 401) {
+          $log.warn('Response 401');
+        }
+        return response || $q.when(response);
+      },
+      responseError: function (rejection) {
+        if (rejection.status === 401) {
+          var usersession = $injector.get('usersession');
+          // usersession via injector because of circular dependencies with $http
+          $log.info('Response Error 401', rejection);
+          usersession.logout();
+          $location.path('/login').search('returnTo', $location.path());
+        }
+        return $q.reject(rejection);
+      }
+    };
+  }
+]).config([
+  '$httpProvider',
+  function ($httpProvider) {
+    $httpProvider.interceptors.push('authInterceptor');
+  }
+]);
+angular.module('appoints.login', [
+  'appoints.config',
+  'appoints.usersession',
+  'ngRoute'
+]).config([
+  '$routeProvider',
+  function config($routeProvider) {
+    $routeProvider.when('/login', {
+      templateUrl: 'auth/login.html',
+      controller: 'LoginCtrl',
+      title: 'Login'
+    });
+  }
+]).run([
+  '$window',
+  '$rootScope',
+  '$location',
+  'config',
+  'usersession',
+  function ($window, $rootScope, $location, config, usersession) {
+    $window.addEventListener('message', function (event) {
+      if (event.origin !== config.defaultApiEndpoint) {
+        return;
+      }
+      usersession.login(event.data).then(function () {
+        if ($rootScope.loginPopup) {
+          $rootScope.loginPopup.close();
+          delete $rootScope.loginPopup;
+        }
+        $location.url('/');
+      });
+    }, false);
+  }
+]).controller('LoginCtrl', [
+  '$scope',
+  '$rootScope',
+  '$window',
+  'config',
+  function LoginController($scope, $rootScope, $window, config) {
+    $scope.loginFacebook = function () {
+      return authWindow(config.defaultApiEndpoint + '/auth/facebook');
+    };
+    $scope.loginGoogle = function () {
+      return authWindow(config.defaultApiEndpoint + '/auth/google');
+    };
+    function authWindow(authUrl) {
+      $rootScope.loginPopup = $window.open(authUrl, 'authenticate', 'width=600,height=450');
+      return false;
+    }
+  }
+]);
 angular.module('appoints', [
   'ngRoute',
   'appoints.flash',
   'appoints.usersession',
+  'appoints.authinterceptor',
   'appoints.home',
   'appoints.login',
   'appoints-client-templates'
@@ -196,11 +253,13 @@ angular.module('appoints', [
       return $location.path() === routeName;
     };
     $scope.logout = function () {
-      usersession.logout(function () {
-        $location.url('/');
-      });
+      usersession.logout();
+      $location.url('/');
     };
-    $scope.$on('event:currentSessionChanged', function (ev, currentSession) {
+    $scope.$on('event:loggedin', function (ev, currentSession) {
+      $scope.user = currentSession;
+    });
+    $scope.$on('event:loggedout', function (ev, currentSession) {
       $scope.user = currentSession;
     });
   }
