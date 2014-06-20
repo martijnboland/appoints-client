@@ -1,4 +1,8 @@
-angular.module('appoints.usersession', [])
+angular.module('appoints.usersession', [
+  'appoints.flash',
+  'appoints.config'
+])
+
 .factory('usersession', function ($rootScope, $http, $window, config, flash) {
 
   var defaultSession = {
@@ -23,11 +27,12 @@ angular.module('appoints.usersession', [])
     // Authenticate the user from the given authorization token
     $window.localStorage.setItem('access_token', token);
     return $http( { method: 'GET', url: config.defaultApiEndpoint + '/me' } )
-      .then(function (userData) {
+      .then(function (res) {
         currentSession.isAuthenticated = true;
-        currentSession.userId = userData.userId;
-        currentSession.displayName = userData.displayName;
-        currentSession.roles = userData.roles;
+        currentSession.userId = res.data.userId;
+        currentSession.displayName = res.data.displayName;
+        currentSession.roles = res.data.roles;
+        $rootScope.$broadcast('event:loggedin', currentSession);
       }, function (err) {
         flash.add(err.message, 'error');
       });
@@ -36,6 +41,7 @@ angular.module('appoints.usersession', [])
   function logout() {
     $window.localStorage.removeItem('access_token');
     currentSession = new Session();
+    $rootScope.$broadcast('event:loggedout', currentSession);
   }
 
   return {

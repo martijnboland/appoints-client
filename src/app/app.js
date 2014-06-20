@@ -2,6 +2,7 @@ angular.module('appoints', [
   'ngRoute',
   'appoints.flash',
   'appoints.usersession',
+  'appoints.authinterceptor',
   'appoints.home',
   'appoints.login',
   'appoints-client-templates'
@@ -28,12 +29,15 @@ angular.module('appoints', [
   };
 
   $scope.logout = function () {
-    usersession.logout(function () {
-      $location.url('/');
-    });
+    usersession.logout();
+    $location.url('/');
   };
 
-  $scope.$on('event:currentSessionChanged', function (ev, currentSession) {
+  $scope.$on('event:loggedin', function (ev, currentSession) {
+    $scope.user = currentSession;
+  });
+
+  $scope.$on('event:loggedout', function (ev, currentSession) {
     $scope.user = currentSession;
   });
 
