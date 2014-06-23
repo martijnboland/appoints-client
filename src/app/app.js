@@ -5,6 +5,7 @@ angular.module('appoints', [
   'appoints.authinterceptor',
   'appoints.home',
   'appoints.login',
+  'appoints.appointments',
   'appoints-client-templates'
 ])
 
@@ -22,7 +23,7 @@ angular.module('appoints', [
     $scope.pageTitle = currentRoute.title || defaultPageTitle;
   });
 
-  $scope.user = usersession.current();
+  $scope.user = usersession.current;
 
   $scope.routeIs = function(routeName) {
     return $location.path() === routeName;

@@ -26,6 +26,9 @@
           <a href="#/" class="navbar-brand">Appoints</a>
         </div>
         <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav">
+            <li ng-class="{active: routeIs('/appointments')}" ng-show='user.isCustomer()'><a href="#/appointments" translate>Appointments</a></li>
+          </ul>
           <ul class="nav navbar-nav navbar-right" ng-show="!user.isAuthenticated">
             <li ng-class="{ active: routeIs('/login') }">
               <a href="#/login">Login</a>
@@ -50,6 +53,7 @@
     <script src="/angular/angular.js"></script>
     <script src="/angular-route/angular-route.js"></script>
     <script src="/rfc6570/rfc6570.js"></script>
+    <script src="/lodash/dist/lodash.compat.js"></script>
     <script src="/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/angular-hal/angular-hal.js"></script>
     <!-- endinject -->
@@ -59,6 +63,7 @@
     <script src="/shared/flash.js"></script>
     <script src="/home/home.js"></script>
     <script src="/shared/appointsapi.js"></script>
+    <script src="/appointments/appointments.js"></script>
     <script src="/auth/usersession.js"></script>
     <script src="/auth/authinterceptor.js"></script>
     <script src="/auth/login.js"></script>

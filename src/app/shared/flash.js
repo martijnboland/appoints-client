@@ -14,6 +14,15 @@ angular.module('appoints.flash', [])
     $rootScope.$broadcast('event:flash.add', flash);
   }
 
+  function addError (err) {
+    if (err.message) {
+      add(err.message, 'error');
+    }
+    else {
+      add(err, 'error');
+    }
+  }
+
   function all () {
     return flashes;
   }
@@ -31,6 +40,7 @@ angular.module('appoints.flash', [])
 
   return {
     add: add,
+    addError: addError,
     all: all,
     clear: clear,
     allClear: allClear

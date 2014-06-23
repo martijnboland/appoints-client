@@ -1,3 +1,4 @@
+/* global _ */
 angular.module('appoints.usersession', [
   'appoints.api',
   'appoints.flash',
@@ -10,7 +11,16 @@ angular.module('appoints.usersession', [
     userId: '',
     displayName: '',
     isAuthenticated: false,
-    roles: []
+    roles: [],
+    isInRole: function(roleName) {
+      return this.isAuthenticated && _(this.roles).contains(roleName);
+    },
+    isAdmin: function() { 
+      return this.isInRole('admin');
+    },
+    isCustomer: function() {
+      return this.isInRole('customer');
+    }
   };
 
   function Session() {
@@ -19,10 +29,6 @@ angular.module('appoints.usersession', [
   }
 
   var currentSession = new Session();
-
-  function current() {
-    return currentSession;
-  }
 
   function login(token) {
     // Authenticate the user from the given authorization token
@@ -46,10 +52,13 @@ angular.module('appoints.usersession', [
     $rootScope.$broadcast('event:loggedout', currentSession);
   }
 
+  var returnTo = '';
+
   return {
-    current: current,
+    current: currentSession,
     login: login,
-    logout: logout
+    logout: logout,
+    returnTo: returnTo
   };
 })
 

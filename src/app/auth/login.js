@@ -24,12 +24,19 @@ angular.module('appoints.login', [
           $rootScope.loginPopup.close();
           delete $rootScope.loginPopup;
         }
-        $location.url('/');
+        if (usersession.returnTo) {
+          $location.url(usersession.returnTo);
+        }
+        else {
+          $location.url('/');
+        }
       });
   }, false);
 })
 
-.controller('LoginCtrl', function LoginController($scope, $rootScope, $window, config) {
+.controller('LoginCtrl', function LoginController($scope, $rootScope, $window, $location, config, usersession) {
+
+  usersession.returnTo = $location.search().returnTo;
 
   $scope.loginFacebook = function () {
     return authWindow(config.defaultApiEndpoint + '/auth/facebook');
@@ -40,7 +47,7 @@ angular.module('appoints.login', [
   };
 
   function authWindow(authUrl) {
-    $rootScope.loginPopup = popupCenterWindow(authUrl, 'authenticate', 600, 400);
+    $rootScope.loginPopup = popupCenterWindow(authUrl, 'authenticate', 640, 500);
     return false;
   }
 
