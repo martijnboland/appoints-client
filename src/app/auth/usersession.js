@@ -1,11 +1,10 @@
-/* global _ */
 angular.module('appoints.usersession', [
   'appoints.api',
   'appoints.flash',
   'appoints.config'
 ])
 
-.factory('usersession', function ($rootScope, $window, config, flash, appointsapi) {
+.factory('usersession', function ($rootScope, $window, config, flash, appointsapi, _) {
 
   var defaultSession = {
     userId: '',

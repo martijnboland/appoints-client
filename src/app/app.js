@@ -9,6 +9,9 @@ angular.module('appoints', [
   'appoints-client-templates'
 ])
 
+// allow DI for use in controllers, unit tests
+.constant('_', window._)
+
 .config(function($httpProvider) {
   $httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];

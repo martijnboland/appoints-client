@@ -41,8 +41,8 @@ gulp.task('clean-css', function () {
 
 gulp.task('styles', ['clean-css'], function () {
   return gulp.src([
-    './src/app/**/*.less',
-    '!./src/app/**/_*.less'
+    './src/styles/**/*.less',
+    '!./src/styles/**/_*.less'
   ])
     .pipe(g.less())
     .pipe(gulp.dest('./.tmp/css/'))
@@ -111,7 +111,7 @@ function index () {
  * Assets
  */
 gulp.task('assets', function () {
-  return gulp.src('./src/app/assets/**')
+  return gulp.src('./src/assets/**')
     .pipe(gulp.dest('./dist/assets'));
 });
 
@@ -159,7 +159,7 @@ gulp.task('watch', ['statics', 'default'], function () {
   });
   gulp.watch('./src/app/index.html', ['index']);
   gulp.watch(['./src/app/**/*.html', '!./src/app/index.html'], ['templates']);
-  gulp.watch(['./src/app/**/*.less'], ['csslint']).on('change', function (evt) {
+  gulp.watch(['./src/styles/**/*.less'], ['csslint']).on('change', function (evt) {
     if (evt.type !== 'changed') {
       gulp.start('index');
     }
