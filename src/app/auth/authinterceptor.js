@@ -22,7 +22,7 @@ angular.module('appoints.authinterceptor', [
         var usersession = $injector.get('usersession'); // usersession via injector because of circular dependencies with $http
         $log.info("Response Error 401", rejection);
         usersession.logout();
-        $location.path('/login').search('returnTo', $location.path());
+//        $location.path('/login').search('returnTo', $location.path());
       }
       return $q.reject(rejection);
     }

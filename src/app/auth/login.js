@@ -40,8 +40,14 @@ angular.module('appoints.login', [
   };
 
   function authWindow(authUrl) {
-    $rootScope.loginPopup = $window.open(authUrl, 'authenticate', 'width=600,height=450');
+    $rootScope.loginPopup = popupCenterWindow(authUrl, 'authenticate', 600, 400);
     return false;
   }
+
+  function popupCenterWindow(url, title, w, h) {
+    var left = (screen.width/2)-(w/2);
+    var top = (screen.height/2)-(h/2);
+    return $window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+  } 
 
 });
