@@ -19,6 +19,7 @@
     "gulp-debug": "^0.3.0",
     "gulp-embedlr": "~0.5.2",
     "gulp-filter": "~0.4.1",
+    "gulp-flatten": "0.0.2",
     "gulp-header": "^1.0.2",
     "gulp-htmlmin": "~0.1.2",
     "gulp-inject": "~0.4.1",

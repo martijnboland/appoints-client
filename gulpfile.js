@@ -94,7 +94,7 @@ gulp.task('vendors', function () {
  * Index
  */
 gulp.task('index', index);
-gulp.task('build-all', ['config', 'styles', 'templates'], index);
+gulp.task('build-all', ['config', 'fonts', 'styles', 'templates'], index);
 
 function index () {
   var opt = {read: false};
@@ -116,6 +116,24 @@ gulp.task('assets', function () {
 });
 
 /**
+ * Fonts
+ */
+gulp.task('fonts', function () {
+  flattenedFontFiles()
+    .pipe(gulp.dest('./.tmp/fonts'));
+});
+
+/**
+ * Fonts-dist
+ */
+gulp.task('fonts-dist', function () {
+  return g.bowerFiles()
+    .pipe(g.filter('**/*.{ttf,woff,eot,svg}'))
+    .pipe(g.flatten())
+    .pipe(gulp.dest('./dist/fonts'));
+});
+
+/**
  * Config
  */
 gulp.task('config', function () {
@@ -128,7 +146,7 @@ gulp.task('config', function () {
 /**
  * Dist
  */
-gulp.task('dist', ['config', 'vendors', 'assets', 'styles-dist', 'scripts-dist'], function () {
+gulp.task('dist', ['config', 'vendors', 'assets', 'fonts-dist', 'styles-dist', 'scripts-dist'], function () {
   return gulp.src('./src/app/index.html')
     .pipe(g.inject(gulp.src('./dist/vendors.min.{js,css}'), {addRootSlash: false, ignorePath: 'dist', starttag: '<!-- inject:vendor:{{ext}} -->'}))
     .pipe(g.inject(gulp.src('./dist/' + bower.name + '.min.{js,css}'), {addRootSlash: false, ignorePath: 'dist'}))
@@ -221,6 +239,12 @@ function testFiles() {
  */
 function cssFiles (opt) {
   return gulp.src('./.tmp/css/**/*.css', opt);
+}
+
+function flattenedFontFiles() {
+  return g.bowerFiles()
+    .pipe(g.filter('**/*.{ttf,woff,eot,svg}'))
+    .pipe(g.flatten());
 }
 
 /**
