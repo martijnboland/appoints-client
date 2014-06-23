@@ -155,7 +155,7 @@ gulp.task('clean-dist', function () {
 /**
  * Dist
  */
-gulp.task('dist', ['clean-dist', 'config', 'vendors', 'assets', 'fonts-dist', 'styles-dist', 'scripts-dist'], function () {
+gulp.task('dist', ['config', 'vendors', 'assets', 'fonts-dist', 'styles-dist', 'scripts-dist'], function () {
   return gulp.src('./src/app/index.html')
     .pipe(g.inject(gulp.src('./dist/vendors.min.js'), {addRootSlash: false, ignorePath: 'dist', starttag: '<!-- inject:vendor:js -->'}))
     .pipe(g.inject(gulp.src('./dist/styles/vendors.min.css'), {addRootSlash: false, ignorePath: 'dist', starttag: '<!-- inject:vendor:css -->'}))
