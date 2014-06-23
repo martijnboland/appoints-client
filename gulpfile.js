@@ -51,7 +51,7 @@ gulp.task('styles', ['clean-css'], function () {
 });
 
 gulp.task('styles-dist', ['styles'], function () {
-  return cssFiles().pipe(dist('css', bower.name));
+  return cssFiles().pipe(dist('css', 'styles/' + bower.name));
 });
 
 gulp.task('csslint', ['styles'], function () {
@@ -85,7 +85,7 @@ gulp.task('templates-dist', function () {
 gulp.task('vendors', function () {
   var bowerStream = g.bowerFiles();
   return es.merge(
-    bowerStream.pipe(g.filter('**/*.css')).pipe(dist('css', 'vendors')),
+    bowerStream.pipe(g.filter('**/*.css')).pipe(dist('css', 'vendors/styles')),
     bowerStream.pipe(g.filter('**/*.js')).pipe(dist('js', 'vendors'))
   );
 });
@@ -137,19 +137,25 @@ gulp.task('fonts-dist', function () {
  * Config
  */
 gulp.task('config', function () {
-  gulp.src('config.json')
+  return gulp.src('config.json')
     .pipe(g.ngConstant())
     // Writes config.js to dist/ folder
     .pipe(gulp.dest('./src/app/'));
 });
 
+gulp.task('clean-dist', function () {
+  return gulp.src('./dist').pipe(g.clean());
+});
+
 /**
  * Dist
  */
-gulp.task('dist', ['config', 'vendors', 'assets', 'fonts-dist', 'styles-dist', 'scripts-dist'], function () {
+gulp.task('dist', ['clean-dist', 'config', 'vendors', 'assets', 'fonts-dist', 'styles-dist', 'scripts-dist'], function () {
   return gulp.src('./src/app/index.html')
-    .pipe(g.inject(gulp.src('./dist/vendors.min.{js,css}'), {addRootSlash: false, ignorePath: 'dist', starttag: '<!-- inject:vendor:{{ext}} -->'}))
-    .pipe(g.inject(gulp.src('./dist/' + bower.name + '.min.{js,css}'), {addRootSlash: false, ignorePath: 'dist'}))
+    .pipe(g.inject(gulp.src('./dist/vendors.min.js'), {addRootSlash: false, ignorePath: 'dist', starttag: '<!-- inject:vendor:js -->'}))
+    .pipe(g.inject(gulp.src('./dist/styles/vendors.min.css'), {addRootSlash: false, ignorePath: 'dist', starttag: '<!-- inject:vendor:css -->'}))
+    .pipe(g.inject(gulp.src('./dist/' + bower.name + '.min.js'), {addRootSlash: false, ignorePath: 'dist'}))
+    .pipe(g.inject(gulp.src('./dist/styles/' + bower.name + '.min.css'), {addRootSlash: false, ignorePath: 'dist'}))
     .pipe(g.htmlmin(htmlminOpts))
     .pipe(gulp.dest('./dist/'));
 });
