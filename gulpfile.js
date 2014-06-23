@@ -51,7 +51,7 @@ gulp.task('styles', ['clean-css'], function () {
 });
 
 gulp.task('styles-dist', ['styles'], function () {
-  return cssFiles().pipe(dist('css', 'styles/' + bower.name));
+  return cssFiles().pipe(dist('css', 'styles/' + bower.name + '-' + bower.version));
 });
 
 gulp.task('csslint', ['styles'], function () {
@@ -65,7 +65,7 @@ gulp.task('csslint', ['styles'], function () {
  * Scripts
  */
 gulp.task('scripts-dist', ['templates-dist'], function () {
-  return appFiles().pipe(dist('js', bower.name, {ngmin: true}));
+  return appFiles().pipe(dist('js', bower.name + '-' + bower.version, { ngmin: true }));
 });
 
 /**
@@ -134,12 +134,17 @@ gulp.task('fonts-dist', function () {
 });
 
 /**
- * Config
+ * Config reads 
  */
 gulp.task('config', function () {
   return gulp.src('config.json')
-    .pipe(g.ngConstant())
-    // Writes config.js to dist/ folder
+    .pipe(g.ngConstant({
+      constants: { 
+        appName: bower.name,
+        appVersion: bower.version,
+        appDescription: bower.description
+      } 
+    }))
     .pipe(gulp.dest('./src/app/'));
 });
 
@@ -154,8 +159,8 @@ gulp.task('dist', ['clean-dist', 'config', 'vendors', 'assets', 'fonts-dist', 's
   return gulp.src('./src/app/index.html')
     .pipe(g.inject(gulp.src('./dist/vendors.min.js'), {addRootSlash: false, ignorePath: 'dist', starttag: '<!-- inject:vendor:js -->'}))
     .pipe(g.inject(gulp.src('./dist/styles/vendors.min.css'), {addRootSlash: false, ignorePath: 'dist', starttag: '<!-- inject:vendor:css -->'}))
-    .pipe(g.inject(gulp.src('./dist/' + bower.name + '.min.js'), {addRootSlash: false, ignorePath: 'dist'}))
-    .pipe(g.inject(gulp.src('./dist/styles/' + bower.name + '.min.css'), {addRootSlash: false, ignorePath: 'dist'}))
+    .pipe(g.inject(gulp.src('./dist/' + bower.name + '-' + bower.version + '.min.js'), {addRootSlash: false, ignorePath: 'dist'}))
+    .pipe(g.inject(gulp.src('./dist/styles/' + bower.name + '-' + bower.version + '.min.css'), {addRootSlash: false, ignorePath: 'dist'}))
     .pipe(g.htmlmin(htmlminOpts))
     .pipe(gulp.dest('./dist/'));
 });

@@ -12,6 +12,6 @@ angular.module('appoints.home', [
     });
 })
 
-.controller('HomeCtrl', function HomeController($scope, config) {
-  $scope.version = config.version;
+.controller('HomeCtrl', function HomeController($scope, appVersion) {
+  $scope.version = appVersion;
 });
