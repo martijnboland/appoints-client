@@ -1,9 +1,10 @@
 angular.module('appoints.usersession', [
+  'appoints.api',
   'appoints.flash',
   'appoints.config'
 ])
 
-.factory('usersession', function ($rootScope, $http, $window, config, flash) {
+.factory('usersession', function ($rootScope, $window, config, flash, appointsapi) {
 
   var defaultSession = {
     userId: '',
@@ -26,16 +27,17 @@ angular.module('appoints.usersession', [
   function login(token) {
     // Authenticate the user from the given authorization token
     $window.localStorage.setItem('access_token', token);
-    return $http( { method: 'GET', url: config.defaultApiEndpoint + '/me' } )
-      .then(function (res) {
+    return appointsapi.apiRoot.then(function (rootResource) {
+      rootResource.$get('me').then(function (userResource) {
         currentSession.isAuthenticated = true;
-        currentSession.userId = res.data.userId;
-        currentSession.displayName = res.data.displayName;
-        currentSession.roles = res.data.roles;
+        currentSession.userId = userResource.userId;
+        currentSession.displayName = userResource.displayName;
+        currentSession.roles = userResource.roles;
         $rootScope.$broadcast('event:loggedin', currentSession);
       }, function (err) {
         flash.add(err.message, 'error');
       });
+    });
   }
 
   function logout() {
