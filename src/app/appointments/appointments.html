@@ -1,1 +1,46 @@
-<h2>My appointments</h2>
+<div class="row">
+  <div class="col-md-6">
+    <h2>My appointments</h2>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="appointment in appointments">
+        <h4 class="list-group-item-heading">{{appointment.title}} <small>{{appointment.dateAndTime | date:'d MMM, y H:mm'}}-{{getEndTime(appointment)}}, duration {{appointment.duration}} mins</small></h4>
+        <p class="list-group-item-text">{{appointment.remarks}}</p>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-6">
+    <h2>Create new appointment</h2>
+    <form role="form" name="form">
+      <div class="form-group">
+        <input type="text" class="form-control" id="title" placeholder="Enter appointment description" ng-model="newAppointment.title" required>
+      </div>
+      <div class="form-group">
+        <label for="dateAndTime">Appointment date and time</label>
+        <div class="dropdown">
+          <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#">
+            <div class="input-group">
+              <p class="form-control-static">{{ newAppointment.dateAndTime | date:'d MMM, y H:mm' }}</p>
+            </div>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <datetimepicker ng-model="newAppointment.dateAndTime" datetimepicker-config="{ dropdownSelector: '#dropdown2', startView: 'hour', minuteStep: 15 }"/>
+          </ul>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="duration">Duration</label>
+        <select class="form-control" id="duration" ng-model="newAppointment.duration">
+          <option value="15">15 minutes</option>
+          <option value="30">30 minutes</option>
+          <option value="60">60 minutes</option>
+          <option value="90">90 minutes</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="remarks">Remarks</label>
+        <textarea id="remarks" class="form-control" rows="3" ng-model="newAppointment.remarks"> </textarea>
+      </div>
+      <button type="submit" class="btn btn-default" ng-click="createAppointment()" ng-disabled="form.$invalid">Create</button>
+    </form>
+  </div>
+</div>

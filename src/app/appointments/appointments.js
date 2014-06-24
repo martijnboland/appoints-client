@@ -12,12 +12,43 @@ angular.module('appoints.appointments', [
     });
 })
 
-.controller('AppointmentsCtrl', function AppointmentsController($scope, appointsapi, flash) {
-  appointsapi.apiRoot.then(function (rootResource) {
-    rootResource.$get('appointments').then(function (appointments) { 
-      $scope.appointments = appointments;
-    }, function (err) {
-      flash.addError(err);
+.controller('AppointmentsCtrl', function AppointmentsController($scope, appointsapi, flash, moment) {
+
+  function load() {
+    return appointsapi.apiRoot.then(function (rootResource) {
+      return rootResource.$get('appointments').then(function (appointmentsResource) { 
+        return appointmentsResource.$get('appointments').then(function(appointments) {
+          $scope.appointments = appointments;
+        });
+      }, function (err) {
+        flash.addError(err);
+      });
     });
-  });
+  }
+
+  function initAppointment() {
+    $scope.newAppointment = {
+      title: '',
+      dateAndTime: moment().startOf('day').add('days', 1).add('hours', 9).toDate(),
+      duration: 30,
+      remarks: ''
+    };
+  }
+
+  $scope.getEndTime = function (appointment) {
+    return moment(appointment.dateAndTime).add('minutes', appointment.duration).format('H:mm');
+  };
+
+  $scope.createAppointment = function () {
+   return appointsapi.apiRoot.then(function (rootResource) {
+      return rootResource.$post('appointments', null, $scope.newAppointment).then(function () {
+        flash.add('Appointment created successfully', 'info');
+        initAppointment();
+      });
+   }).then(load);
+  };
+
+  initAppointment();
+  load();
+  
 });

@@ -23,7 +23,9 @@
     "angular": "~1.2.14",
     "angular-route": "~1.2.14",
     "angular-hal": "~0.1.5",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "moment": "~2.7.0",
+    "angular-bootstrap-datetimepicker": "~0.2.4"
   },
   "overrides": {
     "bootstrap": {

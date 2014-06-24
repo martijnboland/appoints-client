@@ -1,5 +1,7 @@
 angular.module('appoints', [
   'ngRoute',
+  'ui.bootstrap.datetimepicker',
+  'appoints.directives',
   'appoints.flash',
   'appoints.usersession',
   'appoints.authinterceptor',
@@ -11,6 +13,7 @@ angular.module('appoints', [
 
 // allow DI for use in controllers, unit tests
 .constant('_', window._)
+.constant('moment', window.moment)
 
 .config(function($httpProvider) {
   $httpProvider.defaults.useXDomain = true;
