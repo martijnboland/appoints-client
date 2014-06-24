@@ -85,7 +85,7 @@ gulp.task('templates-dist', function () {
 gulp.task('vendors', function () {
   var bowerStream = g.bowerFiles();
   return es.merge(
-    bowerStream.pipe(g.filter('**/*.css')).pipe(dist('css', 'vendors/styles')),
+    bowerStream.pipe(g.filter('**/*.css')).pipe(dist('css', 'styles/vendors')),
     bowerStream.pipe(g.filter('**/*.js')).pipe(dist('js', 'vendors'))
   );
 });
