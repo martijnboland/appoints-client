@@ -1,18 +1,9 @@
 <div class="row">
   <div class="col-md-6">
-    <h2>My appointments</h2>
-    <ul class="list-group">
-      <li class="list-group-item" ng-repeat="appointment in appointments">
-        <h4 class="list-group-item-heading">{{appointment.title}} <small>{{appointment.dateAndTime | date:'d MMM, y H:mm'}}-{{getEndTime(appointment)}}, duration {{appointment.duration}} mins</small></h4>
-        <p class="list-group-item-text">{{appointment.remarks}}</p>
-      </li>
-    </ul>
-  </div>
-  <div class="col-md-6">
     <h2>Create new appointment</h2>
     <form role="form" name="form">
       <div class="form-group">
-        <input type="text" class="form-control" id="title" placeholder="Enter appointment description" ng-model="newAppointment.title" required>
+        <input type="text" class="form-control" id="title" placeholder="Enter appointment description" ng-model="newAppointment.title">
       </div>
       <div class="form-group">
         <label for="dateAndTime">Appointment date and time</label>
@@ -42,5 +33,14 @@
       </div>
       <button type="submit" class="btn btn-default" ng-click="createAppointment()" ng-disabled="form.$invalid">Create</button>
     </form>
+  </div>
+  <div class="col-md-6">
+    <h2>My appointments</h2>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="appointment in appointments">
+        <h4 class="list-group-item-heading">{{appointment.title}} <small>{{appointment.dateAndTime | date:'d MMM, y H:mm'}}-{{getEndTime(appointment)}}, duration {{appointment.duration}} mins</small></h4>
+        <p class="list-group-item-text">{{appointment.remarks}}</p>
+      </li>
+    </ul>
   </div>
 </div>

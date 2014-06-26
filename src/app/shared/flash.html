@@ -1,0 +1,11 @@
+<section ng-controller="FlashCtrl" class="flashcontainer">
+  <div ng-repeat="flashMessage in flashMessages" ng-animate="'fade'" ng-class="getMessageClass(flashMessage.level)">
+    <button type="button" class="close" data-dismiss="alert" ng-click="dismiss(flashMessage)">&times;</button>
+    {{flashMessage.message}}
+    <ul ng-if="flashMessage.details.errors">
+      <li ng-repeat="error in flashMessage.details.errors">
+        {{error.message}}
+      </li>
+    </ul>
+  </div>
+</section>

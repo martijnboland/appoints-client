@@ -21,7 +21,7 @@ angular.module('appoints.appointments', [
           $scope.appointments = appointments;
         });
       }, function (err) {
-        flash.addError(err);
+        flash.addError(err.data);
       });
     });
   }
@@ -44,6 +44,8 @@ angular.module('appoints.appointments', [
       return rootResource.$post('appointments', null, $scope.newAppointment).then(function () {
         flash.add('Appointment created successfully', 'info');
         initAppointment();
+      }, function (err) {
+        flash.addError(err.data);
       });
    }).then(load);
   };

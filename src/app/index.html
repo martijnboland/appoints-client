@@ -46,7 +46,8 @@
         </nav>
       </div>
     </header>
-    <div class="container">
+    <div class="container" ap-hide-flash>
+      <ng-include src="'shared/flash.html'"></ng-include>
       <ng-view></ng-view>
     </div>
     <!-- inject:vendor:js -->
