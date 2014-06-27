@@ -38,8 +38,13 @@
     <h2>My appointments</h2>
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="appointment in appointments">
+        <p class="list-group-item-text pull-right">
+          <a href=""><span class="glyphicon glyphicon-pencil"></span></a>
+          <a href="" ng-click="removeAppointment(appointment)"><span class="glyphicon glyphicon-remove"></span></a>
+        </p>
         <h4 class="list-group-item-heading">{{appointment.title}} <small>{{appointment.dateAndTime | date:'d MMM, y H:mm'}}-{{getEndTime(appointment)}}, duration {{appointment.duration}} mins</small></h4>
         <p class="list-group-item-text">{{appointment.remarks}}</p>
+        
       </li>
     </ul>
   </div>

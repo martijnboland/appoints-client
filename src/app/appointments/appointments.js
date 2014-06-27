@@ -12,7 +12,7 @@ angular.module('appoints.appointments', [
     });
 })
 
-.controller('AppointmentsCtrl', function AppointmentsController($scope, appointsapi, flash, moment) {
+.controller('AppointmentsCtrl', function AppointmentsController($scope, $window, appointsapi, flash, moment) {
 
   function load() {
     return appointsapi.apiRoot.then(function (rootResource) {
@@ -40,16 +40,27 @@ angular.module('appoints.appointments', [
   };
 
   $scope.createAppointment = function () {
-   return appointsapi.apiRoot.then(function (rootResource) {
-    // Sync endDateAndTime first
-    $scope.newAppointment.endDateAndTime = moment($scope.newAppointment.dateAndTime).add('minutes', $scope.newAppointment.duration);
+    return appointsapi.apiRoot.then(function (rootResource) {
+      // Sync endDateAndTime first
+      $scope.newAppointment.endDateAndTime = moment($scope.newAppointment.dateAndTime).add('minutes', $scope.newAppointment.duration);
       return rootResource.$post('appointments', null, $scope.newAppointment).then(function () {
         flash.add('Appointment created successfully', 'info');
         initAppointment();
       }, function (err) {
         flash.addError(err.data);
       });
-   }).then(load);
+    })
+    .then(load);
+  };
+
+  $scope.removeAppointment = function (appointment) {
+    if ($window.confirm('Are you sure')) {
+        return appointment.$del('self').then(function (result) {
+          flash.add(result.message);
+        }, function (err) {
+          flash.addError(err.data);
+        }).then(load);
+    }
   };
 
   initAppointment();

@@ -66,17 +66,14 @@ angular.module('appoints.flash', [])
 
   $scope.$on('event:flash.add', function() {
     $scope.flashMessages = flash.all();
-    $scope.$apply();
   });
 
   $scope.$on('event:flash.remove', function() {
     $scope.flashMessages = flash.all();
-    $scope.$apply();
   });
 
   $scope.$on('event:flash.clear', function() {
     $scope.flashMessages = [];
-    $scope.$apply();
   });
 })
 
