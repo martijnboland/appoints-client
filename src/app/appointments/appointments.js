@@ -41,6 +41,8 @@ angular.module('appoints.appointments', [
 
   $scope.createAppointment = function () {
    return appointsapi.apiRoot.then(function (rootResource) {
+    // Sync endDateAndTime first
+    $scope.newAppointment.endDateAndTime = moment($scope.newAppointment.dateAndTime).add('minutes', $scope.newAppointment.duration);
       return rootResource.$post('appointments', null, $scope.newAppointment).then(function () {
         flash.add('Appointment created successfully', 'info');
         initAppointment();
