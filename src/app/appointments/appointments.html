@@ -35,9 +35,9 @@
     </form>
   </div>
   <div class="col-md-6">
-    <h2>My appointments</h2>
+    <h2>Upcoming appointments</h2>
     <ul class="list-group">
-      <li class="list-group-item" ng-repeat="appointment in appointments">
+      <li class="list-group-item" ng-repeat="appointment in upcomingAppointments">
         <div>
           <a href="" class="pull-right" ng-click="removeAppointment(appointment)" title="Remove"><span class="glyphicon glyphicon-remove"></span></a>
           <div class="dropdown">
@@ -51,5 +51,16 @@
         <p class="list-group-item-text">{{appointment.remarks}}</p>        
       </li>
     </ul>
+    <h2>Past appointments</h2>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="appointment in pastAppointments">
+        <div>
+          <a href="" class="pull-right" ng-click="removeAppointment(appointment)" title="Remove"><span class="glyphicon glyphicon-remove"></span></a>
+        </div>
+        <h4 class="list-group-item-heading">{{appointment.title}} <small>{{appointment.dateAndTime | date:'d MMM, y H:mm'}}-{{appointment.endDateAndTime | date:'H:mm'}}, duration {{appointment.duration}} mins</small></h4>
+        <p class="list-group-item-text">{{appointment.remarks}}</p>        
+      </li>
+    </ul>
+
   </div>
 </div>

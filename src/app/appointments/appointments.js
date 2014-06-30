@@ -18,7 +18,12 @@ angular.module('appoints.appointments', [
     return appointsapi.apiRoot.then(function (rootResource) {
       return rootResource.$get('appointments').then(function (appointmentsResource) { 
         return appointmentsResource.$get('appointments').then(function(appointments) {
-          $scope.appointments = appointments;
+          $scope.upcomingAppointments = _.filter(appointments, function (appointment){
+            return moment(appointment.dateAndTime) > moment();
+          });
+          $scope.pastAppointments = _.filter(appointments, function (appointment){
+            return moment(appointment.dateAndTime) <= moment();
+          });
         });
       }, function (err) {
         flash.addError(err.data);
@@ -72,7 +77,7 @@ angular.module('appoints.appointments', [
     if ($scope.editAppointment) {
       $scope.editAppointment.dateAndTime = newDateTime;
       $scope.editAppointment.endDateAndTime = moment($scope.editAppointment.dateAndTime).add('minutes', $scope.editAppointment.duration).toDate();
-      var appointmentResource = _($scope.appointments).find({ id: $scope.editAppointment.id });
+      var appointmentResource = _($scope.upcomingAppointments).find({ id: $scope.editAppointment.id });
       return appointmentResource.$patch('self', null, { dateAndTime: $scope.editAppointment.dateAndTime, endDateAndTime: $scope.editAppointment.endDateAndTime }).then(function () {
         flash.add('Appointment is rescheduled');
       }, function (err) {
