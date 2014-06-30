@@ -42,7 +42,7 @@
           <a href=""><span class="glyphicon glyphicon-pencil"></span></a>
           <a href="" ng-click="removeAppointment(appointment)"><span class="glyphicon glyphicon-remove"></span></a>
         </p>
-        <h4 class="list-group-item-heading">{{appointment.title}} <small>{{appointment.dateAndTime | date:'d MMM, y H:mm'}}-{{getEndTime(appointment)}}, duration {{appointment.duration}} mins</small></h4>
+        <h4 class="list-group-item-heading">{{appointment.title}} <small>{{appointment.dateAndTime | date:'d MMM, y H:mm'}}-{{appointment.endDateAndTime | date:'H:mm'}}, duration {{appointment.duration}} mins</small></h4>
         <p class="list-group-item-text">{{appointment.remarks}}</p>
         
       </li>

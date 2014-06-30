@@ -37,8 +37,8 @@ angular.module('appoints.flash', [])
   }
 
   function clear () {
-    $rootScope.$broadcast('event:flash.clear', true);
     flashes = [];
+    $rootScope.$broadcast('event:flash.clear', true);
   }
 
   return {
@@ -74,6 +74,7 @@ angular.module('appoints.flash', [])
 
   $scope.$on('event:flash.clear', function() {
     $scope.flashMessages = [];
+    $scope.$apply();
   });
 })
 
