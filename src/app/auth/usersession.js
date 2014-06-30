@@ -33,7 +33,7 @@ angular.module('appoints.usersession', [
     // Authenticate the user from the given authorization token
     $window.localStorage.setItem('access_token', token);
     return appointsapi.apiRoot.then(function (rootResource) {
-      rootResource.$get('me').then(function (userResource) {
+      return rootResource.$get('me').then(function (userResource) {
         currentSession.isAuthenticated = true;
         currentSession.userId = userResource.userId;
         currentSession.displayName = userResource.displayName;

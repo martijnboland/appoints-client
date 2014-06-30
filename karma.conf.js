@@ -12,10 +12,33 @@ module.exports = function ( karma ) {
      * Filled by the task `gulp karma-conf`
      */
     files: [
+      'bower_components/jquery/dist/jquery.js',
+      'bower_components/angular/angular.js',
+      'bower_components/angular-route/angular-route.js',
+      'bower_components/rfc6570/rfc6570.js',
+      'bower_components/lodash/dist/lodash.compat.js',
+      'bower_components/moment/moment.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/angular-hal/angular-hal.js',
+      'bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      '.tmp/appoints-client-templates.js',
+      'src/app/config.js',
+      'src/app/shared/directives.js',
+      'src/app/shared/flash.js',
+      'src/app/home/home.js',
+      'src/app/shared/appointsapi.js',
+      'src/app/appointments/appointments.js',
+      'src/app/auth/usersession.js',
+      'src/app/auth/authinterceptor.js',
+      'src/app/auth/login.js',
+      'src/app/app.js',
+      'src/app/auth/usersession_test.js',
+      'src/app/home/home_test.js'
     ],
 
     frameworks: [ 'mocha', 'chai' ],
-    plugins: [ 'karma-mocha', 'karma-chai', 'karma-phantomjs-launcher' ],
+    plugins: [ 'karma-mocha', 'karma-chai', 'karma-phantomjs-launcher', 'karma-chrome-launcher' ],
 
     /**
      * How to report, by default.
@@ -54,7 +77,8 @@ module.exports = function ( karma ) {
      * the aesthetic advantage of not launching a browser every time you save.
      */
     browsers: [
-      'PhantomJS'
+      'PhantomJS',
+      'Chrome'
     ]
   });
 };
