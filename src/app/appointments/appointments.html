@@ -39,8 +39,8 @@
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="appointment in upcomingAppointments">
         <div>
-          <a href="" class="pull-right" ng-click="removeAppointment(appointment)" title="Remove"><span class="glyphicon glyphicon-remove"></span></a>
           <div class="dropdown">
+            <a href="" class="pull-right" ng-click="removeAppointment(appointment)" title="Remove"><span class="glyphicon glyphicon-remove"></span></a>
             <a class="dropdown-toggle" role="button" data-toggle="dropdown" data-target="#" title="Reschedule appointment" id="appointment{{$index}}" href="" ng-click="setAppointmentForEdit(appointment)"><span class="glyphicon glyphicon-time"></span></a>
             <ul class="dropdown-menu" role="menu">
               <datetimepicker data-ng-model="editAppointment.dateAndTime" data-datetimepicker-config="{ dropdownSelector: '#appointment{{$index}}', startView: 'hour', minuteStep: 15 }" on-set-time="reschedule"/>
