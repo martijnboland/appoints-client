@@ -12,7 +12,7 @@ angular.module('appoints.appointments', [
     });
 })
 
-.controller('AppointmentsCtrl', function AppointmentsController($scope, $window, appointsapi, flash, moment) {
+.controller('AppointmentsCtrl', function AppointmentsController($scope, $window, _, appointsapi, flash, moment) {
 
   function load() {
     return appointsapi.apiRoot.then(function (rootResource) {
@@ -33,6 +33,7 @@ angular.module('appoints.appointments', [
       duration: 30,
       remarks: ''
     };
+    $scope.editAppointment = null;
   }
 
   $scope.getEndTime = function (appointment) {
@@ -53,13 +54,30 @@ angular.module('appoints.appointments', [
     .then(load);
   };
 
-  $scope.removeAppointment = function (appointment) {
+  $scope.removeAppointment = function (appointmentResource) {
     if ($window.confirm('Are you sure')) {
-        return appointment.$del('self').then(function (result) {
-          flash.add(result.message);
-        }, function (err) {
-          flash.addError(err.data);
-        }).then(load);
+      return appointmentResource.$del('self').then(function (result) {
+        flash.add(result.message);
+      }, function (err) {
+        flash.addError(err.data);
+      }).then(load);
+    }
+  };
+
+  $scope.setAppointmentForEdit = function (appointment) {
+    $scope.editAppointment = angular.copy(appointment);
+  };
+
+  $scope.reschedule = function (newDateTime) {
+    if ($scope.editAppointment) {
+      $scope.editAppointment.dateAndTime = newDateTime;
+      $scope.editAppointment.endDateAndTime = moment($scope.editAppointment.dateAndTime).add('minutes', $scope.editAppointment.duration).toDate();
+      var appointmentResource = _($scope.appointments).find({ id: $scope.editAppointment.id });
+      return appointmentResource.$patch('self', null, { dateAndTime: $scope.editAppointment.dateAndTime, endDateAndTime: $scope.editAppointment.endDateAndTime }).then(function () {
+        flash.add('Appointment is rescheduled');
+      }, function (err) {
+        flash.addError(err.data);
+      }).then(load);
     }
   };
 

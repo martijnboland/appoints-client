@@ -38,13 +38,17 @@
     <h2>My appointments</h2>
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="appointment in appointments">
-        <p class="list-group-item-text pull-right">
-          <a href=""><span class="glyphicon glyphicon-pencil"></span></a>
-          <a href="" ng-click="removeAppointment(appointment)"><span class="glyphicon glyphicon-remove"></span></a>
-        </p>
+        <div>
+          <a href="" class="pull-right" ng-click="removeAppointment(appointment)" title="Remove"><span class="glyphicon glyphicon-remove"></span></a>
+          <div class="dropdown">
+            <a class="dropdown-toggle" role="button" data-toggle="dropdown" data-target="#" title="Reschedule appointment" id="appointment{{$index}}" href="" ng-click="setAppointmentForEdit(appointment)"><span class="glyphicon glyphicon-time"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <datetimepicker data-ng-model="editAppointment.dateAndTime" data-datetimepicker-config="{ dropdownSelector: '#appointment{{$index}}', startView: 'hour', minuteStep: 15 }" on-set-time="reschedule"/>
+            </ul>
+          </div>
+        </div>
         <h4 class="list-group-item-heading">{{appointment.title}} <small>{{appointment.dateAndTime | date:'d MMM, y H:mm'}}-{{appointment.endDateAndTime | date:'H:mm'}}, duration {{appointment.duration}} mins</small></h4>
-        <p class="list-group-item-text">{{appointment.remarks}}</p>
-        
+        <p class="list-group-item-text">{{appointment.remarks}}</p>        
       </li>
     </ul>
   </div>
