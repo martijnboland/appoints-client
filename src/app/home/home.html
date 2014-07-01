@@ -1,1 +1,30 @@
-<h2>Appointment scheduler app version {{version}}</h2>
+<h2>What's this?</h2>
+
+<div class="row">
+  <div class="col-md-8">
+    <p>
+    Appoints is an appointment scheduling sample application to find a way and provide a little bit of guidance 
+    into the wild west that is called 'Modern Day Web Development'. It consists of a 
+    <a href="http://nodejs.org/">Node.js</a> REST API backend and an 
+    <a href="https://angularjs.org/">AngularJS</a> frontend, so it's totally buzzword-compliant. Apart from that, 
+    JavaScript, Node.js and Angular simply rock and make it very much possible to build clean, testable and maintainable apps.
+    </p>
+    <p>
+    The following design decisions have been taken:
+    <ul>
+      <li>Totally separated <a href="https://github.com/martijnboland/appoints-client">client</a> and <a href="https://github.com/martijnboland/appoints-api-node">server API</a>, no state;</li>
+      <li>JWT Token based authentication/authorization;</li>
+      <li>No local user accounts, only 3rd party (Facebook & Google implemented);</li>
+      <li>REST API with a touch of hypermedia (<a href="http://stateless.co/hal_specification.html">HAL</a>);</li>
+      <li>Client build step with <a href="http://gulpjs.com/">Gulp</a>, no messing with bundles, asset pipeline or requirejs.</li>
+    </ul>
+    </p>
+    <h3>Where to go next?</h3>
+    <ul>
+      <li><a href="#/appointments">Schedule some appointments</a></li>
+      <li><a href="https://github.com/martijnboland/appoints-api-node">Go to the appoints-api GitHub project (and perhaps write a client for it?)</a></li>
+      <li><a href="https://github.com/martijnboland/appoints-client">Go to the appoints-client GitHub project (this application)</a></li>
+    </ul>    
+  </div>
+</div>
+<footer class="pull-right">Appoints version {{version}} - &copy; Martijn Boland, 2014</footer>
