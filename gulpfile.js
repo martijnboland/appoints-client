@@ -170,7 +170,7 @@ gulp.task('dist', ['config', 'vendors', 'assets', 'fonts-dist', 'styles-dist', '
  */
 gulp.task('statics', g.serve({
   port: 3001,
-  root: ['./.tmp', './.tmp/src/app', './src/app', './bower_components']
+  root: ['./.tmp', './.tmp/src/app', './src', './src/app', './bower_components']
 }));
 
 /**
