@@ -38,6 +38,7 @@
   </div>
   <div class="col-md-6">
     <h2>Upcoming appointments</h2>
+    <p ng-if="upcomingAppointments.length === 0">-- None --</p>
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="appointment in upcomingAppointments">
         <div>
@@ -54,6 +55,7 @@
       </li>
     </ul>
     <h2>Past appointments</h2>
+    <p ng-if="pastAppointments.length === 0">-- None --</p>
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="appointment in pastAppointments">
         <div>
