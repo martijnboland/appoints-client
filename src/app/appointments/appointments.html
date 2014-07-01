@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-md-6">
     <h2>Create new appointment</h2>
+
     <form role="form" name="form">
       <div class="form-group">
         <input type="text" class="form-control" id="title" placeholder="Enter appointment description" ng-model="newAppointment.title">
@@ -33,6 +34,7 @@
       </div>
       <button type="submit" class="btn btn-default" ng-click="createAppointment()" ng-disabled="form.$invalid">Create</button>
     </form>
+
   </div>
   <div class="col-md-6">
     <h2>Upcoming appointments</h2>

@@ -60,7 +60,7 @@ angular.module('appoints.appointments', [
   };
 
   $scope.removeAppointment = function (appointmentResource) {
-    if ($window.confirm('Are you sure')) {
+    if ($window.confirm('Are you sure?')) {
       return appointmentResource.$del('self').then(function (result) {
         flash.add(result.message);
       }, function (err) {
