@@ -1,5 +1,9 @@
 Appoints Client
-============
+===============
+
+Appoints is an appointment scheduling sample application to find a way and provide a bit of guidance into the wild west that is called 'Modern Day Web Development'. 
+It consists of a [Node.js REST API backend](https://github.com/martijnboland/appoints-api-node) and an AngularJS frontend app (this project).
+
 
 ## Development
 
@@ -33,7 +37,7 @@ Then you're able to run Karma directly. Example:
 karma start --single-run
 ```
 
-## Production ready build - a.k.a. dist
+## Production ready build
 
 To make the app ready for deploy to production run:
 
