@@ -17,7 +17,7 @@ angular.module('appoints.appointments', [
   function load() {
     return appointsapi.apiRoot.then(function (rootResource) {
       return rootResource.$get('appointments').then(function (appointmentsResource) { 
-        return appointmentsResource.$get('appointments').then(function(appointments) {
+        return appointmentsResource.$get('appointment').then(function(appointments) { // get embedded appointments
           $scope.upcomingAppointments = _.filter(appointments, function (appointment){
             return moment(appointment.dateAndTime) > moment();
           });
