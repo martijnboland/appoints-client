@@ -34,7 +34,7 @@ angular.module('appoints.appointments', [
   function initAppointment() {
     $scope.newAppointment = {
       title: '',
-      dateAndTime: moment().startOf('day').add('days', 1).add('hours', 9).toDate(),
+      dateAndTime: moment().startOf('day').add(1, 'days').add(9, 'hours').toDate(),
       duration: 30,
       remarks: ''
     };
@@ -42,13 +42,13 @@ angular.module('appoints.appointments', [
   }
 
   $scope.getEndTime = function (appointment) {
-    return moment(appointment.dateAndTime).add('minutes', appointment.duration).format('H:mm');
+    return moment(appointment.dateAndTime).add(appointment.duration, 'minutes').format('H:mm');
   };
 
   $scope.createAppointment = function () {
     return appointsapi.apiRoot.then(function (rootResource) {
       // Sync endDateAndTime first
-      $scope.newAppointment.endDateAndTime = moment($scope.newAppointment.dateAndTime).add('minutes', $scope.newAppointment.duration);
+      $scope.newAppointment.endDateAndTime = moment($scope.newAppointment.dateAndTime).add($scope.newAppointment.duration, 'minutes');
       return rootResource.$post('appointments', null, $scope.newAppointment).then(function () {
         flash.add('Appointment created successfully', 'info');
         initAppointment();
@@ -76,7 +76,7 @@ angular.module('appoints.appointments', [
   $scope.reschedule = function (newDateTime) {
     if ($scope.editAppointment) {
       $scope.editAppointment.dateAndTime = newDateTime;
-      $scope.editAppointment.endDateAndTime = moment($scope.editAppointment.dateAndTime).add('minutes', $scope.editAppointment.duration).toDate();
+      $scope.editAppointment.endDateAndTime = moment($scope.editAppointment.dateAndTime).add($scope.editAppointment.duration, 'minutes').toDate();
       var appointmentResource = _($scope.upcomingAppointments).find({ id: $scope.editAppointment.id });
       return appointmentResource.$patch('self', null, { dateAndTime: $scope.editAppointment.dateAndTime, endDateAndTime: $scope.editAppointment.endDateAndTime }).then(function () {
         flash.add('Appointment is rescheduled');
