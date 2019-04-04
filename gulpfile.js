@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     lazypipe = require('lazypipe'),
     stylish = require('jshint-stylish'),
     bower = require('./bower'),
+    mainBowerFiles = require('main-bower-files'),
     isWatching = false;
 
 var htmlminOpts = {
@@ -83,7 +84,7 @@ gulp.task('templates-dist', function () {
  * Vendors
  */
 gulp.task('vendors', function () {
-  var bowerStream = g.bowerFiles();
+  var bowerStream = gulp.src(mainBowerFiles());
   return es.merge(
     bowerStream.pipe(g.filter('**/*.css')).pipe(dist('css', 'styles/vendors')),
     bowerStream.pipe(g.filter('**/*.js')).pipe(dist('js', 'vendors'))
@@ -99,7 +100,7 @@ gulp.task('build-all', ['config', 'fonts', 'styles', 'templates'], index);
 function index () {
   var opt = {read: false};
   return gulp.src('./src/app/index.html')
-    .pipe(g.inject(g.bowerFiles(opt), {ignorePath: 'bower_components', starttag: '<!-- inject:vendor:{{ext}} -->'}))
+    .pipe(g.inject(gulp.src(mainBowerFiles(opt)), {ignorePath: 'bower_components', starttag: '<!-- inject:vendor:{{ext}} -->'}))
     .pipe(g.inject(es.merge(appFiles(), cssFiles(opt)), {ignorePath: ['.tmp', 'src/app']}))
     .pipe(gulp.dest('./src/app/'))
     .pipe(g.embedlr())
@@ -127,23 +128,23 @@ gulp.task('fonts', function () {
  * Fonts-dist
  */
 gulp.task('fonts-dist', function () {
-  return g.bowerFiles()
+  return gulp.src(mainBowerFiles())
     .pipe(g.filter('**/*.{ttf,woff,eot,svg}'))
     .pipe(g.flatten())
     .pipe(gulp.dest('./dist/fonts'));
 });
 
 /**
- * Config reads 
+ * Config reads
  */
 gulp.task('config', function () {
   return gulp.src('config.json')
     .pipe(g.ngConstant({
-      constants: { 
+      constants: {
         appName: bower.name,
         appVersion: bower.version,
         appDescription: bower.description
-      } 
+      }
     }))
     .pipe(gulp.dest('./src/app/'));
 });
@@ -253,7 +254,7 @@ function cssFiles (opt) {
 }
 
 function flattenedFontFiles() {
-  return g.bowerFiles()
+  return gulp.src(mainBowerFiles())
     .pipe(g.filter('**/*.{ttf,woff,eot,svg}'))
     .pipe(g.flatten());
 }
