@@ -2,7 +2,7 @@ Appoints Client
 ===============
 
 Appoints is an appointment scheduling sample application that hopefully provides a bit of guidance into the wild west that is called 'Modern Day Web Development'. 
-It consists of a [Node.js REST API backend](https://github.com/martijnboland/appoints-api-node) and an AngularJS frontend app (this project). A live demo can be found at http://appoints-client.azurewebsites.net.
+It consists of a [Node.js REST API backend](https://github.com/martijnboland/appoints-api-node) and an AngularJS frontend app (this project). A live demo can be found at https://appoints-client.azurewebsites.net.
 
 ## Development
 
